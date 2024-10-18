@@ -1,5 +1,5 @@
 import gl from './core/gl/gl.js';
-import { createShaderModule, UniformBuffer, fetchShader } from './core/gl/shaders.js';
+import { UniformBuffer, fetchShader } from './core/gl/shaders.js';
 import { mat4 } from './vendor/wgpu-matrix.js';
 import { Pipeline } from './core/gl/pipeline.js';
 import { Keyboard } from './core/keyboard.js';
@@ -147,5 +147,4 @@ const mainLoop = (time) => {
     lastTime = time;
     requestAnimationFrame(mainLoop);
 }
-console.log(gl.device);
 requestAnimationFrame(mainLoop);

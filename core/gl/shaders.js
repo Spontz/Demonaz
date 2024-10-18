@@ -1,4 +1,5 @@
 import gl from './gl.js';
+import { fetchAsset } from '../utils.js';
 
 export function createShaderModule(gl, label, shaders) {
     return gl.device.createShaderModule({
@@ -46,6 +47,6 @@ export class UniformBuffer {
 }
 
 export async function fetchShader(shader) {
-    const res = await fetch(`./shaders/${shader}.wgsl`);
+    const res = await fetchAsset(`./shaders/${shader}.wgsl`);
     return await res.text();
 }

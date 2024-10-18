@@ -1,6 +1,7 @@
 import gl from './gl.js';
 import { glTFLoader } from '../../vendor/minimal-gltf-loader.js';
 import { vec3 } from '../../vendor/wgpu-matrix.js';
+import { fetchAsset } from '../utils.js';
 
 export class Mesh {
 
@@ -92,12 +93,9 @@ export class Mesh {
     }
 
     async fetchW3D(url) {
+        const res = await fetchAsset(url);
         try {
-            const response = await fetch(url);
-            if (!response.ok) {
-                throw new Error(`Server response: ${response.status}`);
-            }
-            const json = await response.json();
+            const json = await res.json();
             this.loadW3D(json);
         } catch (error) {
             console.error(error.message);

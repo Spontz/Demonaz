@@ -1,4 +1,5 @@
 import gl from './gl.js';
+import { fetchAsset } from '../utils.js';
 
 export class Texture {
     texture
@@ -48,11 +49,8 @@ export class Texture {
 
 export const createTextureFromURL = async (url) => {
     try {
-        const response = await fetch(url);
-        if (!response.ok) {
-            throw new Error(`Server response: ${response.status}`);
-        }
-        const blob = await response.blob();
+        const res = await fetchAsset(url);
+        const blob = await res.blob();
         const bitmap = await createImageBitmap(blob, { colorSpaceConversion: 'none' });
         const texture = new Texture(bitmap.width, bitmap.height);
         texture.createTextureFromBitmap(bitmap, url);
