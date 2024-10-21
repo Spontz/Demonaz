@@ -5,15 +5,21 @@ import { Pipeline } from './core/gl/pipeline.js';
 import { Keyboard } from './core/keyboard.js';
 import { Camera } from './core/camera.js';
 import { Mesh } from './core/gl/mesh.js';
-import { Cube } from './core/cube.js';
 import { getDepthTexture, createTextureFromURL, Texture } from './core/gl/texture.js';
+import { Demonaz } from './core/demonaz.js';
 
 const shaders = await fetchShader('main');
 const clearColor = { r: 0.4, g: 0.3, b: 0.8, a: 1.0 };
 
-const cube = new Cube();
 
-await gl.init('c');
+
+const demonaz = new Demonaz({ sound: false, canvasId: 'c' });
+
+const section = { name: 'section1', startTime: 0, endTime: 10000, layer: 1 };
+section.init = () => { };
+
+demonaz.addSection(section);
+await demonaz.init();
 
 const mymesh = new Mesh();
 // //const mymeshGLTF = new Mesh();
@@ -35,7 +41,6 @@ console.log(unibuf)
 
 
 const bindGroup = gl.device.createBindGroup({
-
     label: 'triangle bind group',
     layout: renderPipeline.getBindGroupLayout(0),
     entries: [
@@ -45,10 +50,7 @@ const bindGroup = gl.device.createBindGroup({
     ],
 });
 
-// 7: Create GPUCommandEncoder to issue commands to the GPU
-// Note: render pass descriptor, command encoder, etc. are destroyed after use, fresh one needed for each frame.
 
-let lastTime = 0;
 let fps = 0;
 let xpos = 0.0, zpos = 0.0;
 
@@ -88,7 +90,7 @@ const depthTexture = getDepthTexture();
 console.log(depthTexture);
 
 
-const mainLoop = (time) => {
+section.render = (time) => {
 
     mat4.rotateX(model, 0.01, model);
     let normal = mat4.inverse(model)
@@ -138,13 +140,6 @@ const mainLoop = (time) => {
     // 10: End frame by passing array of command buffers to command queue for execution
     gl.device.queue.submit([commandEncoder.finish()]);
 
-
-    if (lastTime) {
-        const deltaTime = time - lastTime;
-        fps = 1000 / deltaTime;
-        //console.log(`FPS: ${fps.toFixed(2)}`);
-    }
-    lastTime = time;
-    requestAnimationFrame(mainLoop);
 }
-requestAnimationFrame(mainLoop);
+
+demonaz.run();
