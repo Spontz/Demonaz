@@ -89,7 +89,6 @@ export class Mesh {
             usage: GPUBufferUsage.INDEX | GPUBufferUsage.COPY_DST,
         });
         gl.device.queue.writeBuffer(this.indexBuffer, 0, this.indexes, 0, this.indexes.length);
-
     }
 
     async fetchW3D(url) {
@@ -129,37 +128,6 @@ export class Mesh {
             vn[i3].x += normal[0];
             vn[i3].y += normal[1];
             vn[i3].z += normal[2];
-
-
         }
-
-        this.normals = vn.map(n => vec3.normalize(vec3.create(n.x, n.y, n.z)));
-        const newvertices = new Float32Array((this.vertices.length / 5) * 8);
-
-        let pos = 0;
-        for (let i = 0; i < this.vertices.length; i += 5) {
-            newvertices[pos * 8] = this.vertices[i];
-            newvertices[pos * 8 + 1] = this.vertices[i + 1];
-            newvertices[pos * 8 + 2] = this.vertices[i + 2];
-
-            newvertices[pos * 8 + 3] = this.normals[pos][0];
-            newvertices[pos * 8 + 4] = this.normals[pos][1];
-            newvertices[pos * 8 + 5] = this.normals[pos][2];
-
-            newvertices[pos * 8 + 6] = this.vertices[i + 3];
-            newvertices[pos * 8 + 7] = this.vertices[i + 4];
-            pos++;
-
-        }
-        this.vertices = newvertices;
-        console.log("fsdfsdfsd", this.normals, pos);
-        // let pos = 0;
-        // for (let i = 3; i < this.vertices.length; i += 8) {
-        //     this.vertices[i] = this.normals[pos][0];
-        //     this.vertices[i + 1] = this.normals[pos][1];
-        //     this.vertices[i + 2] = this.normals[pos][2];
-        //     pos++;
-        // }
-
     }
 }

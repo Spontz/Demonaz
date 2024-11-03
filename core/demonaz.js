@@ -19,7 +19,7 @@ export class Demonaz {
             if (typeof section.init !== 'function') {
                 throw Error(`section ${section.name} doesn't have init function`);
             }
-            section.init();
+            await section.init();
         }
     }
 
@@ -42,6 +42,7 @@ export class Demonaz {
         for (let section of this.sections) {
             if (this.currentTime >= section.startTime && this.currentTime <= section.endTime) {
                 section.render(this.currentTime);
+
             }
         }
 
